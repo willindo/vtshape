@@ -1,0 +1,27 @@
+You're absolutely correct! Using bind mounts in Docker provides exactly the advantage you've described. This approach is particularly beneficial for development workflows, especially when using tools like Visual Studio Code. Let me elaborate on this:
+
+1. Shared project structure: When you use a bind mount, you create a direct link between a directory on your local machine and a directory in the container. This means both your local system and the container have access to the same files and folders.
+
+2. Easy editing with local tools: As you mentioned, you can use your preferred local development tools, like Visual Studio Code, to edit the files. Since the files are on your local system, you get all the benefits of your local IDE, including syntax highlighting, code completion, and other features you're familiar with.
+
+3. Immediate reflection in the container: Any changes you make to the files on your local system are immediately reflected in the container. This is because the container is accessing the same files through the bind mount.
+
+Here's a simple example of how you might set this up:
+
+```
+$ docker run -it --mount type=bind,source="$(pwd)",target=/app -p 3000:3000 node:14 bash
+```
+
+This command:
+- Mounts the current directory (`$(pwd)`) to `/app` in the container
+- Maps port 3000 from the container to port 3000 on your host
+- Starts a bash shell in a Node.js container
+
+Now you can edit files in your current directory using VS Code, and run the application inside the container. The changes will be immediately available to the container.
+
+This setup is indeed very advantageous for development because:
+1. You can use your familiar local development environment.
+2. You don't need to rebuild the container image after every code change.
+3. You can easily test your code in an environment that's closer to production.
+
+For more information on using bind mounts for development, you can refer to the [Get-started > Workshop > Use bind mounts](https://docs.docker.com/get-started/workshop/06_bind_mounts/) documentation, which provides examples and best practices for this workflow.
